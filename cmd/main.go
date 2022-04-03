@@ -16,10 +16,10 @@ const (
 )
 
 func main() {
-	//не статичный порт
+	// Hе статичный порт
 	port := os.Getenv( key: "PORT")
 
-	//Рутина для инициализации соединения по порту
+	// Рутина для инициализации соединения по порту
 	go func() {
 		log.Fatal(http.ListenAndServe(":"+port, handler: nil))
 	}()
