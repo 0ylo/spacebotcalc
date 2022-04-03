@@ -2,8 +2,8 @@ package main
 
 import (
 	"fmt"
-	//tgbotapi "gopkg.in/telegram-bot-api.v4"
-	tgbotapi "github.com/go-telegram-bot-api/telegram-bot-api/v5"
+	tgbotapi "gopkg.in/telegram-bot-api.v4"
+	//tgbotapi "github.com/go-telegram-bot-api/telegram-bot-api/v5"
 	"log"
 	"net/http"
 	"os"
