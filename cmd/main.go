@@ -3,9 +3,8 @@ package main
 import (
 	"flag"
 	"log"
-	"os"
 	"net/http"
-	"path"
+	"os"
 
 	tgbotapi "github.com/go-telegram-bot-api/telegram-bot-api/v5"
 )
@@ -22,11 +21,11 @@ var (
 func init() {
 	// Hе статичный порт
 	port := os.Getenv("PORT")
-	address := fmt.Sprintf("%s:%s", "0.0.0.0", port)
+	//address := fmt.Sprintf("%s:%s", "0.0.0.0", port)
 
 	// Рутина для инициализации соединения по порту
 	go func() {
-		log.Fatal(http.ListenAndServe(":"+port, handler: nil))
+		log.Fatal(http.ListenAndServe(":"+port, nil))
 	}()
 
 	// принимаем на входе флаг -telegrambottoken
@@ -98,11 +97,6 @@ $ git add .
 $ git commit -am "initial commit"
 $ git push heroku main
 */
-
-
-
-
-
 
 /*
 _______________________________________
