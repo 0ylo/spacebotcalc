@@ -21,6 +21,8 @@ var (
 func init() {
 	// Hе статичный порт
 	port := os.Getenv("PORT")
+	//log.Print("Listening on :" + port)
+	//log.Fatal(http.ListenAndServe(":"+port, nil))
 	//address := fmt.Sprintf("%s:%s", "0.0.0.0", port)
 
 	// Рутина для инициализации соединения по порту
