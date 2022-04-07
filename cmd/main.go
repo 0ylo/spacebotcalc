@@ -45,7 +45,7 @@ func main() {
 	// вычитываем их и обрабатываем
 	for update := range updates {
 		// универсальный ответ на любое сообщение
-		reply := "Не знаю что сказать"
+		reply := "Не знаю что сказать!"
 		if update.Message == nil {
 			continue
 		}
