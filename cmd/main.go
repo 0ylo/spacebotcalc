@@ -1,47 +1,75 @@
 package main
 
 import (
+	"flag"
 	"log"
 	"os"
 
-	"github.com/joho/godotenv"
-	"github.com/yanzay/tbot/v2"
-	//tgbotapi "github.com/go-telegram-bot-api/telegram-bot-api/v5"
+	tgbotapi "github.com/go-telegram-bot-api/telegram-bot-api/v5"
 )
 
-type application struct{
-	client *tbot.Client
-}
-
 var (
-	app application
-	bot *tbot.Server
-	token string
+	// глобальная переменная в которой храним токен
+	telegramBotToken string
 )
 
 func init() {
-	e := godotenv.Load()
-	if e != nil{
-		log.Println(e)
+	// принимаем на входе флаг -telegrambottoken
+	flag.StringVar(&telegramBotToken, "telegrambottoken", "5281456176:AAH8pz8Rv-74_xUwKBwrujE8AxQ32O6zY-U", "Telegram Bot Token")
+	flag.Parse()
+
+	// без него не запускаемся
+	if telegramBotToken == "" {
+		log.Print("-telegrambottoken is required")
+		os.Exit(1)
 	}
-	token = os.Getenv("5281456176:AAH8pz8Rv-74_xUwKBwrujE8AxQ32O6zY-U
-	")
 }
 
 func main() {
-	bot = tbot.New(token)
-	app.client = bot.Client()
-	bot.HandleMessage("/start", app.startHandler)
-	log.Fatal(bot.Start())
+	// используя токен создаем новый инстанс бота
+	bot, err := tgbotapi.NewBotAPI(telegramBotToken)
+	if err != nil {
+		log.Panic(err)
+	}
+
+	log.Printf("Authorized on account %s", bot.Self.UserName)
+
+	// u - структура с конфигом для получения апдейтов
+	u := tgbotapi.NewUpdate(0)
+	u.Timeout = 60
+
+	// используя конфиг u создаем канал в который будут прилетать новые сообщения
+	updates := bot.GetUpdatesChan(u)
+
+	// в канал updates прилетают структуры типа Update
+	// вычитываем их и обрабатываем
+	for update := range updates {
+		// универсальный ответ на любое сообщение
+		reply := "Не знаю что сказать"
+		if update.Message == nil {
+			continue
+		}
+
+		// логируем от кого какое сообщение пришло
+		log.Printf("[%s] %s", update.Message.From.UserName, update.Message.Text)
+
+		// свитч на обработку комманд
+		// комманда - сообщение, начинающееся с "/"
+		switch update.Message.Command() {
+		case "start":
+			reply = "Привет. Я телеграм-бот"
+		case "hello":
+			reply = "world"
+		}
+
+		// создаем ответное сообщение
+		msg := tgbotapi.NewMessage(update.Message.Chat.ID, reply)
+		// отправляем
+		bot.Send(msg)
+	}
 }
 
-func (a *application) startHandler(m *tbot.Message){
-	msg := "work!" a.client.SendMessage(m.Chat.ID, msg)
-}
-
-
-
-/* 
+/*
 Read heroku logs - "heroku logs --tail"
 
 Deploy:
@@ -55,10 +83,6 @@ $ git add .
 $ git commit -am "initial commit"
 $ git push heroku main
 */
-
-
-
-
 
 /*
 package main
@@ -98,7 +122,7 @@ func main() {
 	if _, err := bot.SetWebhook(tgbotapi.NewWebHook(webHook)); err != nil {log.Fatal(format: "settening webhook %v; error: %v", webHook, err)
 	}
 	log.Println(("webHook set")
-	
+
 	//слушаем url для принятия сообщений
 	updates := bot.ListenForWebhook(pattern: "/")
 	//создаем канал для общения с го рутин, чтобы общаться с разными пользователями
