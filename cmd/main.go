@@ -8,6 +8,10 @@ import (
 	tgbotapi "github.com/go-telegram-bot-api/telegram-bot-api/v5"
 )
 
+const (
+	webhook = "https://spacebotcalc.herokuapp.com/"
+)
+
 var (
 	// глобальная переменная в которой храним токен
 	telegramBotToken string
