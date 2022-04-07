@@ -4,6 +4,8 @@ import (
 	"flag"
 	"log"
 	"os"
+	"net/http"
+	"path"
 
 	tgbotapi "github.com/go-telegram-bot-api/telegram-bot-api/v5"
 )
@@ -18,6 +20,15 @@ var (
 )
 
 func init() {
+	// Hе статичный порт
+	port := os.Getenv("PORT")
+	address := fmt.Sprintf("%s:%s", "0.0.0.0", port)
+
+	// Рутина для инициализации соединения по порту
+	go func() {
+		log.Fatal(http.ListenAndServe(":"+port, handler: nil))
+	}()
+
 	// принимаем на входе флаг -telegrambottoken
 	flag.StringVar(&telegramBotToken, "telegrambottoken", "5281456176:AAH8pz8Rv-74_xUwKBwrujE8AxQ32O6zY-U", "Telegram Bot Token")
 	flag.Parse()
@@ -62,12 +73,8 @@ func main() {
 		switch update.Message.Command() {
 		case "start":
 			reply = "Привет. Я телеграм-бот"
-		case "hello":
-			reply = "world"
 		case "help":
 			reply = "Can't help right now..."
-		case "/help":
-			reply = "How can i help u?"
 		}
 
 		// создаем ответное сообщение
@@ -92,7 +99,14 @@ $ git commit -am "initial commit"
 $ git push heroku main
 */
 
+
+
+
+
+
 /*
+_______________________________________
+
 package main
 
 import (
