@@ -11,7 +11,7 @@ import (
 )
 
 const (
-	webhook = "https://spacebotcalc.herokuapp.com/"
+//webhook = "https://spacebotcalc.herokuapp.com/"
 )
 
 var (
@@ -92,6 +92,8 @@ func main() {
 }
 
 /*
+Use go get URLofRep - if some imports doesn't work
+.
 Read heroku logs - "heroku logs --tail"
 
 Deploy:
