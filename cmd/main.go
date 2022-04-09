@@ -1,3 +1,4 @@
+//*
 package main
 
 import (
@@ -23,7 +24,9 @@ func init() {
 	port := os.Getenv("PORT")
 	//log.Print("Listening on :" + port)
 	//log.Fatal(http.ListenAndServe(":"+port, nil))
+
 	//address := fmt.Sprintf("%s:%s", "0.0.0.0", port)
+	//fmt.Println(address)
 
 	// Рутина для инициализации соединения по порту
 	go func() {
@@ -76,10 +79,13 @@ func main() {
 			reply = "Привет. Я телеграм-бот"
 		case "help":
 			reply = "Can't help right now..."
+		case "calc":
+			reply = "Let's see.."
 		}
 
 		// создаем ответное сообщение
 		msg := tgbotapi.NewMessage(update.Message.Chat.ID, reply)
+
 		// отправляем
 		bot.Send(msg)
 	}
@@ -101,12 +107,11 @@ $ git push heroku main
 */
 
 /*
-_______________________________________
+//_______________________________________
 
 package main
 
 import (
-	"fmt"
 	tgbotapi "gopkg.in/telegram-bot-api.v4"
 	//tgbotapi "github.com/go-telegram-bot-api/telegram-bot-api/v5"
 	"log"
@@ -117,38 +122,43 @@ import (
 var ()
 
 const (
-	webhook = "https://spacebotcalc.herokuapp.com/"
+	webHook = "https://spacebotcalc.herokuapp.com/"
 )
 
 func main() {
 	// Hе статичный порт
-	port := os.Getenv( key: "PORT")
+	port := os.Getenv("PORT")
 
 	// Рутина для инициализации соединения по порту
 	go func() {
-		log.Fatal(http.ListenAndServe(":"+port, handler: nil))
+		log.Fatal(http.ListenAndServe(":"+port, nil))
 	}()
 
 	// Падение в случае если не смогли создать бота + обработка ошибки
-	bot, err := tgbotapi.NewBotAPI(tgTOKEN()
-	if err != nil{
+	var tgTOKEN string = "5281456176:AAH8pz8Rv-74_xUwKBwrujE8AxQ32O6zY-U"
+	bot, err := tgbotapi.NewBotAPI(tgTOKEN)
+	if err != nil {
 		log.Fatal("creation bot", err)
 	}
-	log.Println(("bot created")
+	log.Println("bot created")
 
 	//webhook
-	if _, err := bot.SetWebhook(tgbotapi.NewWebHook(webHook)); err != nil {log.Fatal(format: "settening webhook %v; error: %v", webHook, err)
+	if _, err := bot.SetWebhook(tgbotapi.NewWebhook(webHook)); err != nil {
+		log.Fatal("settening webhook %v; error: %v", webHook, err)
 	}
-	log.Println(("webHook set")
+	log.Println("webHook set")
 
 	//слушаем url для принятия сообщений
-	updates := bot.ListenForWebhook(pattern: "/")
+	updates := bot.ListenForWebhook("/")
 	//создаем канал для общения с го рутин, чтобы общаться с разными пользователями
-	for update := renge updates {
-		if _, err := bot.Send(tgbotapi.NewMessage(update.Message.From.Chat.ID, update.Message.Text)); err != nil {
+	for update := range updates {
+		if _, err := bot.Send(tgbotapi.NewMessage(update.Message.Chat.ID, update.Message.Text)); err != nil {
 			log.Print(err)
 		}
 	}
-
 }
+
+//Just clear Webhook setting with
+//curl -F "url=" https://api.telegram.org/botYOUR_TOKEN/setWebhook
+
 */
