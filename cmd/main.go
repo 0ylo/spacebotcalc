@@ -8,7 +8,7 @@ import (
 
 var (
 	//  Global varible for BotToken
-	telegramBotToken string = "TOKENHERE"
+	telegramBotToken string = "TOKEN_HERE"
 )
 var numericKeyboard = tgbotapi.NewReplyKeyboard(
 	tgbotapi.NewKeyboardButtonRow(
