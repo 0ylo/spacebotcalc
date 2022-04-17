@@ -30,7 +30,7 @@ func init() {
 	}()
 
 	// Get flag - telegrambottoken
-	flag.StringVar(&telegramBotToken, "telegrambottoken", "TOKENHERE", "Telegram Bot Token")
+	flag.StringVar(&telegramBotToken, "telegrambottoken", "5281456176:AAH8pz8Rv-74_xUwKBwrujE8AxQ32O6zY-U", "Telegram Bot Token")
 	flag.Parse()
 
 	// Don't run without telegrambottoken
