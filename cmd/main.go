@@ -35,8 +35,6 @@ func main() {
 
 	// Reed a "update" messeges from "updates" channel
 	for update := range updates {
-		// Default answer for any message
-		//reply := "Sorry, unknown command. Just use butttons bellow, or type <Calculate> or <More Info>"
 
 		if update.Message == nil {
 			continue
@@ -47,6 +45,9 @@ func main() {
 
 		// Create answer message
 		msg := tgbotapi.NewMessage(update.Message.Chat.ID, "")
+
+		// Default answer for any message
+		msg.Text = "Sorry, unknown command. Just use butttons bellow, or type <Calculate> or <More Info>"
 
 		// TG keyboard
 		msg.ReplyMarkup = numericKeyboard
