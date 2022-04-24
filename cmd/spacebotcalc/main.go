@@ -3,13 +3,15 @@ package main
 import (
 	"log"
 
+	"github.com/0ylo/spacebotcalc/internal/config"
 	tgbotapi "github.com/go-telegram-bot-api/telegram-bot-api/v5"
 )
 
 var (
-	//  Global varible for BotToken.
-	telegramBotToken string = "TOKENHERE"
+	version string = "unknown"
+	build   string = "unknown"
 )
+
 var numericKeyboard = tgbotapi.NewReplyKeyboard(
 	tgbotapi.NewKeyboardButtonRow(
 		tgbotapi.NewKeyboardButton("Calculate"),
@@ -18,8 +20,22 @@ var numericKeyboard = tgbotapi.NewReplyKeyboard(
 )
 
 func main() {
+	cfg, err := config.Init(version, build)
+	if err != nil {
+		log.Fatalf("Read config: %v", err)
+	}
+	if cfg == nil {
+		log.Fatal("Config is empty")
+	}
+
+	if len(cfg.Bot.Token) == 0 {
+		log.Fatal("Please, configure the Telegram token either in the config or in environment variable SPACEBOTCALC_TOKEN")
+	}
+
+	log.Printf("Version: %s, build: %s", cfg.Version, cfg.Build)
+	log.Println("Starting Spacebotcalc")
 	// Use token for create instance bot
-	bot, err := tgbotapi.NewBotAPI(telegramBotToken)
+	bot, err := tgbotapi.NewBotAPI(cfg.Bot.Token)
 	if err != nil {
 		log.Panic(err)
 	}
@@ -28,14 +44,13 @@ func main() {
 
 	// u - varible for get updates from Tg server
 	u := tgbotapi.NewUpdate(0)
-	u.Timeout = 60
+	u.Timeout = cfg.Bot.Timeout
 
 	// Get new message
 	updates := bot.GetUpdatesChan(u)
 
 	// Reed a "update" messeges from "updates" channel
 	for update := range updates {
-
 		if update.Message == nil {
 			continue
 		}

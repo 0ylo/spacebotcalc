@@ -1,0 +1,6 @@
+---
+# Bot settings
+bot:
+  token: ''
+  debug: false
+  timeout: 60
