@@ -17,6 +17,7 @@ make help
 Available targets:
   build     Compile the binary.
   install   Install to $GOBIN path.
+  run       Run code.
   clean     Cleanup binary.
   help      Show this message.
 ```
