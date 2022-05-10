@@ -28,7 +28,7 @@ func Calculate(dep, dur float64) float64 {
 }
 
 // Function for calculate hard percent (menu #1)
-func calculate() {
+func calcul() {
 	// Say "Hello" and ask a sum of deposit
 	fmt.Println("\nПриветствую! Это калькулятор сложного процента для проекта SpaceBot!\n\nВведите сумму депозита в рублях:")
 	fmt.Scanln(&dep)
