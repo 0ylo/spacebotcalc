@@ -20,6 +20,13 @@ const (
 var dep, dayly, money, relax, first float64
 var day int
 
+
+// Calc func for tg
+func Calculate(dep, dur float64) float64 {
+
+	return dep + dur
+}
+
 // Function for calculate hard percent (menu #1)
 func calculate() {
 	// Say "Hello" and ask a sum of deposit
