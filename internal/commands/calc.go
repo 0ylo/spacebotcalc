@@ -20,15 +20,59 @@ const (
 var dep, dayly, money, relax, first float64
 var day int
 
+func Calculate(dep float64, dur int) (float64, int) {
 
-// Calc func for tg
-func Calculate(dep, dur float64) float64 {
+	days := daysInMonth(dur)
+	fmt.Println("all days is: ", days)
 
-	return dep + dur
+	//months := math.Round(float64(days) / 30)
+	//fmt.Println("all days is: ", days)
+
+	// Calculating refound for the deposit period without reinvesting
+	relax = dep + dep*minTax*float64(dur)
+	if dep > float64(threshold) {
+		relax = dep + dep*maxTax*float64(dur)
+	}
+	fmt.Println("\nХорошо, без реинвестирования ваш депозит через", dur, "месяцаев, составит:")
+	fmt.Printf("%.2f\n", relax)
+
+	// Calculating the first interest payment (which comes the next day, and increases every day)
+	first = dep * dayMinTax
+	if dep > float64(threshold) {
+		first = dep * dayMaxTax
+	}
+	fmt.Printf("Ежедневно вам будет начисляться процент, начиная с\n%.2f\n", first)
+
+
+
+
+
+	return dep, dur
 }
 
+func daysInMonth(month int) int {
+	var now = time.Now()
+	//fmt.Scanln(&month)
+	for month < 1 {
+		fmt.Println("Введите пожалуйста значение больше нуля")
+		fmt.Scanln(&month)
+	}
+	var se = now.AddDate(0, month, 0)
+	dur := se.Sub(now)
+	allday := dur.Hours() / 24
+	return int(allday)
+}
+
+
+
+
+
+
+
+
+
 // Function for calculate hard percent (menu #1)
-func calcul() {
+func calculateold() {
 	// Say "Hello" and ask a sum of deposit
 	fmt.Println("\nПриветствую! Это калькулятор сложного процента для проекта SpaceBot!\n\nВведите сумму депозита в рублях:")
 	fmt.Scanln(&dep)
