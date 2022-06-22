@@ -1,10 +1,6 @@
 ---
 # Bot settings
 bot:
-<<<<<<< HEAD
   token: ''
-=======
-  token: ''
->>>>>>> e9a280662a4a39cf0c2bfedcce63e765e7f1b935
   debug: false
   timeout: 60
