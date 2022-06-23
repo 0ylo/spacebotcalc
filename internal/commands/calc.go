@@ -43,10 +43,6 @@ func Calculate(dep float64, dur int) (float64, int) {
 	}
 	fmt.Printf("Ежедневно вам будет начисляться процент, начиная с\n%.2f\n", first)
 
-
-
-
-
 	return dep, dur
 }
 
@@ -62,14 +58,6 @@ func daysInMonth(month int) int {
 	allday := dur.Hours() / 24
 	return int(allday)
 }
-
-
-
-
-
-
-
-
 
 // Function for calculate hard percent (menu #1)
 func calculateold() {
