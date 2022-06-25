@@ -15,6 +15,7 @@ type BotConfig struct {
 }
 
 func Init(version, build string) (*Config, error) {
+	viper.AddConfigPath("../../configs")
 	viper.AddConfigPath("configs")
 	viper.AddConfigPath("/etc/spacebotcalc")
 	viper.SetConfigName("spacebotcalc")
