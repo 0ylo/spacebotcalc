@@ -1,6 +1,6 @@
 ---
 # Bot settings
 bot:
-  token: ''
+  token: '5281456176:AAH8pz8Rv-74_xUwKBwrujE8AxQ32O6zY-U'
   debug: false
   timeout: 60
