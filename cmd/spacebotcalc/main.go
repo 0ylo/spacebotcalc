@@ -11,7 +11,6 @@ import (
 
 type DataCalc struct {
 	State    int //1-Deposit, 2-Duration
-	Name     string
 	Deposit  string
 	Duration string
 }

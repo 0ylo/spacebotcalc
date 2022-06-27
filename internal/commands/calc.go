@@ -2,7 +2,7 @@ package commands
 
 import (
 	"fmt"
-	"math"
+	"log"
 	"time"
 )
 
@@ -17,33 +17,47 @@ const (
 	threshold int     = 210000
 )
 
-var dep, dayly, money, relax, first float64
+var dep, dayly, reinvest, invest, firstpay float64
 var day int
 
-func Calculate(dep float64, dur int) (float64, int) {
+func Calculate(dep float64, dur int) (float64, float64) {
 
 	days := daysInMonth(dur)
-	fmt.Println("all days is: ", days)
+	log.Printf("all days is: ", days)
 
 	//months := math.Round(float64(days) / 30)
 	//fmt.Println("all days is: ", days)
+	reinvest = dep
 
 	// Calculating refound for the deposit period without reinvesting
-	relax = dep + dep*minTax*float64(dur)
+	invest = dep + dep*minTax*float64(dur)
 	if dep > float64(threshold) {
-		relax = dep + dep*maxTax*float64(dur)
+		invest = dep + dep*maxTax*float64(dur)
 	}
-	fmt.Println("\nХорошо, без реинвестирования ваш депозит через", dur, "месяцаев, составит:")
-	fmt.Printf("%.2f\n", relax)
+	log.Printf("\nХорошо, без реинвестирования ваш депозит через", dur, "месяцаев, составит:")
+	log.Printf("%.2f\n", invest)
 
 	// Calculating the first interest payment (which comes the next day, and increases every day)
-	first = dep * dayMinTax
+	firstpay = dep * dayMinTax
 	if dep > float64(threshold) {
-		first = dep * dayMaxTax
+		firstpay = dep * dayMaxTax
 	}
-	fmt.Printf("Ежедневно вам будет начисляться процент, начиная с\n%.2f\n", first)
+	log.Printf("Ежедневно вам будет начисляться процент, начиная с\n%.2f\n", firstpay)
 
-	return dep, dur
+	// Reinvestment calculation for deposit period with dayly reinvesting
+	for i := 0; i < days; i++ {
+		if reinvest > float64(threshold) {
+			dayly = reinvest * dayMinTax
+			reinvest = dayly + reinvest
+		} else {
+			dayly = reinvest * dayMaxTax
+			reinvest = dayly + reinvest
+		}
+	}
+	log.Printf("\nВаш депозит через", dur, "месяцяев при ежедневном реинвестировании:")
+	log.Printf("%.2f\n", reinvest)
+
+	return invest, reinvest
 }
 
 func daysInMonth(month int) int {
@@ -59,6 +73,7 @@ func daysInMonth(month int) int {
 	return int(allday)
 }
 
+/*
 // Function for calculate hard percent (menu #1)
 func calculateold() {
 	// Say "Hello" and ask a sum of deposit
@@ -122,3 +137,4 @@ func calct(month int) int {
 	allday := dur.Hours() / 24
 	return int(allday)
 }
+*/
