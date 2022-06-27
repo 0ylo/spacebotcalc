@@ -2,7 +2,6 @@ package commands
 
 import (
 	"fmt"
-	"log"
 	"time"
 )
 
@@ -20,10 +19,10 @@ const (
 var dep, dayly, reinvest, invest, firstpay float64
 var day int
 
-func Calculate(dep float64, dur int) (float64, float64) {
+func Calculate(dep float64, dur int) (float64, float64, float64) {
 
 	days := daysInMonth(dur)
-	log.Printf("all days is: ", days)
+	//log.Printf("all days is: ", days)
 
 	//months := math.Round(float64(days) / 30)
 	//fmt.Println("all days is: ", days)
@@ -34,15 +33,15 @@ func Calculate(dep float64, dur int) (float64, float64) {
 	if dep > float64(threshold) {
 		invest = dep + dep*maxTax*float64(dur)
 	}
-	log.Printf("\nХорошо, без реинвестирования ваш депозит через", dur, "месяцаев, составит:")
-	log.Printf("%.2f\n", invest)
+	// log.Printf("\nХорошо, без реинвестирования ваш депозит через", dur, "месяцаев, составит:")
+	// log.Printf("%.2f\n", invest)
 
 	// Calculating the first interest payment (which comes the next day, and increases every day)
 	firstpay = dep * dayMinTax
 	if dep > float64(threshold) {
 		firstpay = dep * dayMaxTax
 	}
-	log.Printf("Ежедневно вам будет начисляться процент, начиная с\n%.2f\n", firstpay)
+	//log.Printf("Ежедневно вам будет начисляться процент, начиная с\n%.2f\n", firstpay)
 
 	// Reinvestment calculation for deposit period with dayly reinvesting
 	for i := 0; i < days; i++ {
@@ -54,10 +53,10 @@ func Calculate(dep float64, dur int) (float64, float64) {
 			reinvest = dayly + reinvest
 		}
 	}
-	log.Printf("\nВаш депозит через", dur, "месяцяев при ежедневном реинвестировании:")
-	log.Printf("%.2f\n", reinvest)
+	//log.Printf("\nВаш депозит через", dur, "месяцяев при ежедневном реинвестировании:")
+	//log.Printf("%.2f\n", reinvest)
 
-	return invest, reinvest
+	return invest, reinvest, firstpay
 }
 
 func daysInMonth(month int) int {
