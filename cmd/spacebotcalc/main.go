@@ -1,6 +1,7 @@
 package main
 
 import (
+	"fmt"
 	"log"
 	"strconv"
 
@@ -13,6 +14,9 @@ type DataCalc struct {
 	State    int //1-Deposit, 2-Duration
 	Deposit  string
 	Duration string
+	Invest   string
+	Reinvest string
+	Firstpay string
 }
 
 var (
@@ -107,15 +111,24 @@ func main() {
 
 						// ----
 						de, err := strconv.ParseFloat(dc.Deposit, 64)
-						log.Printf("Convert f, g:", de, err)
+						if err != nil {
+							log.Printf("Convertation error", err)
+						}
 						du, err := strconv.Atoi(dc.Duration)
-						log.Printf("Convert f, g:", du, err)
+						if err != nil {
+							log.Printf("Convertation error", err)
+						}
 
-						res1, res2 := commands.Calculate(de, du)
-						log.Print("res1&2 is ", res1, res2)
+						conv1, conv2, conv3 := commands.Calculate(de, du)
+						//log.Print("res1&2 is ", conv1, conv2, conv3)
+
+						dc.Invest = fmt.Sprintf("%.1f\n", conv1)
+						dc.Reinvest = fmt.Sprintf("%.1f\n", conv2)
+						dc.Firstpay = fmt.Sprintf("%.1f\n", conv3)
 						// ----
 
-						msgConfig := tgbotapi.NewMessage(update.Message.Chat.ID, "Считаю...")
+						msgConfig := tgbotapi.NewMessage(update.Message.Chat.ID, "💵 Without reinvesting you get - "+dc.Invest+"\n🚀 With daily reinvesting you get - "+dc.Reinvest+"\n🪙 You daily payback starts from - "+dc.Firstpay)
+
 						bot.Send(msgConfig)
 						delete(dataCalcMap, update.Message.From.ID)
 					}
